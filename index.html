@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>E-Laundry Bersih Express — Layanan Laundry Kiloan & Satuan Cepat Terpercaya</title>
-  <meta name="description" content="Layanan Laundry Kiloan, Cuci Kering Setrika, Bed Cover, Sepatu, dan Helm dengan antar-jemput gratis dan pemesanan WhatsApp langsung." />
+  <title>Worksheet Development — E-Laundry (Katalog UMKM)</title>
+  <meta name="description" content="Checklist interaktif dan panduan requirement workshop development E-Laundry UMKM (15 Langkah, 44 User Stories Bonus, 8 Kriteria Keamanan)." />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -13,11 +13,10 @@
         extend: {
           colors: {
             brand: {
-              50: '#f0f9ff',
-              100: '#e0f2fe',
-              500: '#0284c7',
-              600: '#0369a1',
-              700: '#075985',
+              50: '#f0fdf4',
+              500: '#16a34a',
+              600: '#15803d',
+              700: '#166534',
             }
           }
         }
@@ -26,285 +25,1363 @@
   </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
-  <!-- Navigasi -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 dark:bg-slate-900/90 dark:border-slate-800 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-2 text-xl font-bold text-sky-600 dark:text-sky-400">
-        <i class="fa-solid fa-shirt"></i>
-        <span>E-Laundry</span>
-      </a>
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-        <a href="#layanan" class="hover:text-sky-600 transition">Paket Layanan</a>
-        <a href="#kalkulator" class="hover:text-sky-600 transition">Estimasi Biaya</a>
-        <a href="#alur" class="hover:text-sky-600 transition">Alur Pesan</a>
-        <a href="#kontak" class="hover:text-sky-600 transition">Kontak & Lokasi</a>
-      </nav>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
+
+  <!-- Sticky Topbar -->
+  <header class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300" aria-label="Toggle Mode Gelap">
+        <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg shadow">
+          <i class="fa-solid fa-soap"></i>
+        </div>
+        <div>
+          <h1 class="text-base font-bold leading-tight">Worksheet Development</h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400">E-Laundry · Katalog Layanan & Pemesanan</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <!-- Progress Counter -->
+        <div class="hidden sm:flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full text-xs font-semibold">
+          <i class="fa-solid fa-list-check text-emerald-600 dark:text-emerald-400"></i>
+          <span id="progressLabel">0 / 15 Selesai</span>
+        </div>
+
+        <!-- Mode Gelap Toggle -->
+        <button id="themeBtn" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Mode Gelap/Terang">
           <i id="themeIcon" class="fa-solid fa-moon"></i>
         </button>
-        <a id="btnNavWA" href="https://wa.me/6281234567890?text=Halo%20E-Laundry%2C%20saya%20ingin%20jadwalkan%20antar%20jemput%20laundry" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm transition">
-          <i class="fa-brands fa-whatsapp text-lg"></i>
-          <span class="hidden sm:inline">Pesan WhatsApp</span>
+
+        <a href="https://github.com/sodikinnaa/e-loundry" target="_blank" class="text-xs bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 px-3 py-2 rounded-lg font-medium flex items-center gap-1.5 hover:opacity-90 transition">
+          <i class="fa-brands fa-github"></i>
+          <span>Repo</span>
         </a>
       </div>
     </div>
+    <!-- Progress Bar -->
+    <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5">
+      <div id="progressBar" class="bg-emerald-500 h-1.5 transition-all duration-300" style="width: 0%"></div>
+    </div>
   </header>
 
-  <!-- Hero Section -->
-  <main class="flex-grow">
-    <section class="relative overflow-hidden bg-gradient-to-b from-sky-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 py-16 md:py-24 border-b border-slate-200 dark:border-slate-800">
-      <div class="max-w-6xl mx-auto px-4 text-center">
-        <span class="inline-block px-3 py-1 bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300 text-xs font-semibold rounded-full uppercase tracking-wider mb-4">
-          Antar Jemput Gratis Se-Radius 5 KM
-        </span>
-        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white max-w-3xl mx-auto leading-tight">
-          Pakaian Bersih, Wangi & Rapi <span class="text-sky-600 dark:text-sky-400">Tanpa Ribet</span>
-        </h1>
-        <p class="mt-4 text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-          Layanan laundry kiloan & premium satuan. 1 mesin cuci untuk 1 pelanggan, detergen higienis, setrika uap anti-lecek.
-        </p>
-        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <a href="#kalkulator" class="px-6 py-3.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold shadow-lg shadow-sky-600/20 transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-calculator"></i>
-            Hitung Estimasi Biaya
-          </a>
-          <a href="#layanan" class="px-6 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 font-semibold transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-list-check"></i>
-            Daftar Harga Paket
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Paket Layanan -->
-    <section id="layanan" class="py-16 max-w-6xl mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold">Pilihan Paket Layanan</h2>
-        <p class="mt-2 text-slate-600 dark:text-slate-400">Transparan, higienis, dan selesai tepat waktu.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Paket 1 -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:border-sky-500 transition">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-400 flex items-center justify-center text-xl mb-4">
-              <i class="fa-solid fa-basket-shopping"></i>
-            </div>
-            <h3 class="text-xl font-bold">Cuci Kering Setrika</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Solusi baju harian wangi dan rapi siap pakai.</p>
-            <div class="mt-4 text-3xl font-extrabold text-sky-600 dark:text-sky-400">
-              Rp 8.000 <span class="text-sm font-normal text-slate-500">/ Kg</span>
-            </div>
-            <ul class="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Estimasi reguler 2 hari</li>
-              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>1 Mesin 1 Pelanggan</li>
-              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Setrika uap rapi & wangi premium</li>
-            </ul>
-          </div>
-          <button onclick="orderPreset('Cuci Kering Setrika', 8000)" class="mt-6 w-full py-2.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-sky-300 font-semibold text-sm transition">
-            Pilih Paket Ini
-          </button>
-        </div>
-
-        <!-- Paket 2 -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border-2 border-sky-500 shadow-lg relative flex flex-col justify-between">
-          <span class="absolute -top-3 right-6 bg-sky-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-            Terpopuler
+  <main class="max-w-5xl mx-auto px-4 py-8 space-y-10">
+    <!-- Header Intro -->
+    <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-semibold rounded-full mb-2">
+            Development Track
           </span>
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center text-xl mb-4">
-              <i class="fa-solid fa-bolt"></i>
-            </div>
-            <h3 class="text-xl font-bold">Express Kilat (6 Jam)</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Cuci cepat butuh mendadak, siap jemput langsung.</p>
-            <div class="mt-4 text-3xl font-extrabold text-sky-600 dark:text-sky-400">
-              Rp 15.000 <span class="text-sm font-normal text-slate-500">/ Kg</span>
-            </div>
-            <ul class="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Selesai dalam 6 jam</li>
-              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Prioritas pengerjaan utama</li>
-              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Packaging eksklusif anti debu</li>
-            </ul>
-          </div>
-          <button onclick="orderPreset('Express Kilat 6 Jam', 15000)" class="mt-6 w-full py-2.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm shadow transition">
-            Pilih Paket Ini
-          </button>
+          <h2 class="text-2xl md:text-3xl font-extrabold">Panduan Requirement E-Laundry UMKM</h2>
+          <p class="mt-1 text-slate-600 dark:text-slate-400 text-sm leading-relaxed max-w-2xl">
+            Disadur dari modul resmi <a href="https://worksheet.andixurniawan.com/development" target="_blank" class="text-emerald-600 hover:underline">worksheet.andixurniawan.com/development</a>. Ikuti 15 langkah terstruktur, user story wajib US-01 s/d US-06, serta 44 fitur bonus hingga 500 poin.
+          </p>
         </div>
-
-        <!-- Paket 3 -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between hover:border-sky-500 transition">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-400 flex items-center justify-center text-xl mb-4">
-              <i class="fa-solid fa-bed"></i>
-            </div>
-            <h3 class="text-xl font-bold">Bed Cover & Satuan</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Spesialis selimut tebal, sprei besar, jas, dan jaket.</p>
-            <div class="mt-4 text-3xl font-extrabold text-sky-600 dark:text-sky-400">
-              Rp 25.000 <span class="text-sm font-normal text-slate-500">/ Pcs</span>
-            </div>
-            <ul class="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Perawatan kain sensitif</li>
-              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Hilangkan tungau & alergen</li>
-              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Pengering suhu terkontrol</li>
-            </ul>
-          </div>
-          <button onclick="orderPreset('Bed Cover Satuan', 25000)" class="mt-6 w-full py-2.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-sky-300 font-semibold text-sm transition">
-            Pilih Paket Ini
+        <div class="text-right">
+          <button onclick="resetProgress()" class="text-xs text-rose-500 hover:underline">
+            <i class="fa-solid fa-rotate-left mr-1"></i>Reset Progres Checklist
           </button>
         </div>
       </div>
     </section>
 
-    <!-- Kalkulator Biaya -->
-    <section id="kalkulator" class="py-16 bg-slate-100 dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800">
-      <div class="max-w-3xl mx-auto px-4">
-        <div class="text-center mb-8">
-          <h2 class="text-3xl font-bold">Simulasi Hitung & Pesan Langsung</h2>
-          <p class="text-slate-600 dark:text-slate-400 text-sm mt-1">Hitung estimasi cucianmu dan teruskan rincian pesanan langsung ke WhatsApp toko kami.</p>
-        </div>
+    <!-- Nav Tab Section -->
+    <div class="flex border-b border-slate-200 dark:border-slate-800 gap-6 text-sm font-semibold overflow-x-auto pb-1">
+      <a href="#langkah-utama" class="text-emerald-600 border-b-2 border-emerald-600 pb-2 whitespace-nowrap">15 Langkah Utama (Wajib)</a>
+      <a href="#bonus-stories" class="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 pb-2 whitespace-nowrap">44 User Stories Bonus (US-07 - US-50)</a>
+      <a href="#audit-keamanan" class="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 pb-2 whitespace-nowrap">8 Audit Keamanan (K-6 - K-13)</a>
+    </div>
 
-        <div class="bg-white dark:bg-slate-950 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 dark:border-slate-800">
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium mb-1" for="namaPemesan">Nama Lengkap</label>
-              <input type="text" id="namaPemesan" placeholder="Contoh: Budi Santoso" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-sky-500 focus:outline-none" />
-            </div>
+    <!-- BAGIAN 1: 15 Langkah Utama -->
+    <section id="langkah-utama" class="space-y-6">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+          15 Langkah Utama Pengembangan
+        </h3>
+        <span class="text-xs text-slate-500">Centang untuk menyimpan progres di browser</span>
+      </div>
 
-            <div>
-              <label class="block text-sm font-medium mb-1" for="layananPilihan">Pilihan Layanan</label>
-              <select id="layananPilihan" onchange="hitungTotal()" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                <option value="8000" data-nama="Cuci Kering Setrika">Cuci Kering Setrika (Rp 8.000 / Kg)</option>
-                <option value="6000" data-nama="Cuci Lipat Saja">Cuci Kering Lipat (Rp 6.000 / Kg)</option>
-                <option value="15000" data-nama="Express Kilat 6 Jam">Express Kilat 6 Jam (Rp 15.000 / Kg)</option>
-                <option value="25000" data-nama="Bed Cover Satuan">Bed Cover / Selimut (Rp 25.000 / Pcs)</option>
-                <option value="30000" data-nama="Cuci Sepatu Premium">Cuci Sepatu Deep Clean (Rp 30.000 / Pasang)</option>
-              </select>
-            </div>
+      <div class="space-y-4">
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium mb-1" for="jumlahKilo">Jumlah (Kg / Pcs)</label>
-                <input type="number" id="jumlahKilo" min="1" value="3" oninput="hitungTotal()" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-sky-500 focus:outline-none" />
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-1">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                1
               </div>
               <div>
-                <label class="block text-sm font-medium mb-1" for="opsiAntar">Metode Ambil / Antar</label>
-                <select id="opsiAntar" onchange="hitungTotal()" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                  <option value="0">Antar Jemput Gratis (Maks 5 KM)</option>
-                  <option value="0">Drop Langsung ke Outlet</option>
-                  <option value="10000">Antar Jemput Luar Radius (+Rp 10.000)</option>
-                </select>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 1 · ±10 menit</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Salin template dan online-kan dengan Vercel</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Vercel adalah tempat aplikasimu di simpan dan ditayangkan di internet.Tombol Deploy di bawah otomatis menyalin template ke akun GitHub-mu dan langsung bisa tayang.</p>
               </div>
             </div>
-
             <div>
-              <label class="block text-sm font-medium mb-1" for="alamatJemput">Alamat Penjemputan / Catatan Khusus</label>
-              <textarea id="alamatJemput" rows="2" placeholder="Jl. Melati No. 12, Pagar hitam (Catatan: jangan pakai pelembut untuk kemeja sutra)" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(1, this.checked)" id="check-step-1" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
             </div>
           </div>
 
-          <!-- Total Ringkasan -->
-          <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
-            <div>
-              <p class="text-xs text-slate-500">Estimasi Total Biaya</p>
-              <p id="labelTotal" class="text-2xl font-extrabold text-sky-600 dark:text-sky-400">Rp 24.000</p>
+          <div class="mt-3 pl-11">
+            <ol class="list-decimal list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300 mt-3"><li>Klik tombol hitam di bawah ini : ▲ Deploy with Vercel</li><li>Pilih Continue with GitHub , lalu izinkan akses kalau diminta. Gambar: login Vercel dengan Continue with GitHub</li><li>Di kolom Repository Name , isi nama tanpa spasi, misalnya katalog-budi , kalau saya diisi titrasi-coffe . Pastikan gembok berwarna orange Gambar: proses clone Repository. setelah itu Klik Create .</li><li>Tunggu proses deploy sampai muncul tulisan Congratulations (±1–2 menit). Gambar: halaman Congratulations setelah deploy</li><li>Klik gambar pratinjau atau tombol Continue to Project Gambar: Continue to Project Lalu klik link domain yang (berakhiran .vercel.app ). Gambar: Tampilan Project yang berhasil di domain titrasi-coffe.vercel.app</li><li>Catat link ini, nanti dikumpulkan.</li></ol>
+            
+            
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanHalaman "Toko Contoh" tampil dengan 6 produk contoh dan tulisan "Masih data contoh". Ini normal: aplikasimu sudah online, tapi belum tersambung ke database.
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-2">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                2
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 2 · ±5 menit</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Buat proyek database di Supabase</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Supabase adalah tempat menyimpan data produk dan akun admin tokomu.</p>
+              </div>
             </div>
-            <button onclick="kirimPesananWA()" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm shadow flex items-center gap-2 transition">
-              <i class="fa-brands fa-whatsapp text-lg"></i>
-              Kirim ke WhatsApp
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(2, this.checked)" id="check-step-2" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            <ol class="list-decimal list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300 mt-3"><li>Buka supabase.com , klik Sign in , pilih Continue with GitHub . Gambar: Supabase</li><li>Klik New Organization . Gambar: tombol New Organization</li><li>Isi Project name (misalnya Discaleup ).</li><li>Isi Database Password (klik Generate juga boleh). Simpan password ini di catatan HP.</li><li>Pilih Region : Southeast Asia (Singapore) .</li><li>Klik Create new project , lalu tunggu sampai selesai (±2 menit). Gambar: tombol Create new project</li></ol>
+            
+            
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanDashboard proyek terbuka, menu di kiri berisi Table Editor, SQL Editor, Authentication, dan lainnya.
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-3">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                3
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 3 · ±5 menit</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Buat tabel produk dengan skrip</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Skrip ini membuat tabel produk, mengisi 6 produk awal, dan memasang aturan keamanan database.</p>
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(3, this.checked)" id="check-step-3" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            <ol class="list-decimal list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300 mt-3"><li>Buka repo GitHub-mu (yang baru dibuat di Langkah 1, alamatnya github.com/akunmu/nama-repo ), masuk ke folder docs , klik file schema.sql . Isinya sama dengan schema.sql di repo template . Gambar: file docs/schema.sql di repo GitHub</li><li>Klik ikon Copy raw file (ikon dua kotak di kanan atas isi file).</li><li>Di Supabase, buka menu SQL Editor di seblah kiri. Pastikan SQL Editor BUKAN Table Editor</li><li>Tempel (Ctrl+V / Cmd+V) seluruh isi ke kotak editor.</li><li>Klik tombol Run di kanan atas. Gambar: tombol Run dan hasil Success</li><li>Buka menu Table Editor , klik tabel produk . Gambar: tabel produk di Table Editor</li></ol>
+            
+            
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanMuncul tulisan "Success. No rows returned", dan di Table Editor tabel produk berisi 6 baris produk.
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-4">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                4
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 4 · ±5 menit</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Buat akun admin toko</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Akun ini dipakai pemilik toko untuk masuk ke halaman admin. Password bawaannya nanti wajib kamu ganti di Langkah 13.</p>
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(4, this.checked)" id="check-step-4" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            <ol class="list-decimal list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300 mt-3"><li>Di Supabase, buka menu Authentication , lalu Users . Gambar: menu Authentication → Users</li><li>Klik Add user , pilih Create new user . Gambar: Add user → Create new user</li><li>Isi email dan password bawaan yang ditampilkan mentor di layar . Gambar: isian email dan password admin</li><li>Centang Auto Confirm User , lalu klik Create user .</li><li>Masih di Authentication, buka Sign In / Providers . Matikan pilihan Allow new users to sign up , lalu klik Save . Gambar: mematikan Allow new users to sign up</li></ol>
+            
+            
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanAda 1 pengguna di daftar Users, dan pendaftaran akun baru sudah dimatikan (supaya orang lain tidak bisa membuat akun admin di tokomu).
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-5">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                5
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 5 · ±10 menit</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Sambungkan Vercel ke Supabase</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Aplikasi butuh 3 kunci untuk bisa membuka database. Kunci ini rahasia: jangan dibagikan ke siapa pun.</p>
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(5, this.checked)" id="check-step-5" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            <ol class="list-decimal list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300 mt-3"><li>Di Supabase, ambil 3 nilai berikut (nama menu bisa sedikit berbeda, tanya pendamping kalau tidak ketemu): Project Settings → Data API → Project URL. Bentuknya https://xxxx.supabase.co . Project Settings → API Keys → Publishable key , berawalan sb_publishable_ . Secret key : di halaman yang sama, berawalan sb_secret_ . Klik ikon mata untuk menampilkan, lalu salin. Gambar: lokasi Project URL dan API keys di Supabase Gambar: lokasi Project URL dan API keys di Supabase Gambar: lokasi Project URL dan API keys di Supabase Gambar: lokasi Project URL dan API keys di Supabase</li><li>Buka dashboard Vercel, klik proyekmu, lalu Settings → Environment Variables . Gambar: Settings → Environment Variables di Vercel</li><li>Tambahkan 3 variabel ini satu per satu (Key di atas, Value di bawah), lalu klik Save : Gambar: tiga environment variable sudah terisi</li></ol>
+            
+            
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PERINTAH GIT / TERMINAL</span>
+            <button onclick="copyText(this)" data-copy="Key:   SUPABASE_URL
+Value: (Project URL)
+
+Key:   SUPABASE_PUBLISHABLE_KEY
+Value: (Publishable key)
+
+Key:   SUPABASE_SECRET_KEY
+Value: (Secret key)" class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin
             </button>
           </div>
-        </div>
-      </div>
-    </section>
+          <pre class="bg-slate-950 text-slate-200 p-3 rounded-lg text-xs overflow-x-auto font-mono">Key:   SUPABASE_URL
+Value: (Project URL)
 
-    <!-- Alur Kerja -->
-    <section id="alur" class="py-16 max-w-6xl mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold">4 Langkah Mudah Cuci di Sini</h2>
-        <p class="text-slate-600 dark:text-slate-400">Tinggal duduk santai di rumah, cucian selesai bersih dan harum.</p>
-      </div>
+Key:   SUPABASE_PUBLISHABLE_KEY
+Value: (Publishable key)
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-          <div class="w-12 h-12 mx-auto rounded-full bg-sky-100 dark:bg-sky-950 text-sky-600 font-bold flex items-center justify-center text-lg mb-3">1</div>
-          <h4 class="font-bold mb-1">Pesan via WA</h4>
-          <p class="text-xs text-slate-500">Kirim alamat penjemputan dan perkiraan berat pakaian.</p>
+Key:   SUPABASE_SECRET_KEY
+Value: (Secret key)</pre>
         </div>
-        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-          <div class="w-12 h-12 mx-auto rounded-full bg-sky-100 dark:bg-sky-950 text-sky-600 font-bold flex items-center justify-center text-lg mb-3">2</div>
-          <h4 class="font-bold mb-1">Kurir Menjemput</h4>
-          <p class="text-xs text-slate-500">Pakaian ditimbang akurat dan nota dikirimkan via WA.</p>
+        
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanDeploy ulang selesai tanpa error. Halaman aplikasi masih menampilkan data contoh. Ini normal: kuncinya sudah terpasang, tapi kodenya baru akan disambungkan ke database di Langkah 9.
         </div>
-        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-          <div class="w-12 h-12 mx-auto rounded-full bg-sky-100 dark:bg-sky-950 text-sky-600 font-bold flex items-center justify-center text-lg mb-3">3</div>
-          <h4 class="font-bold mb-1">Proses Higienis</h4>
-          <p class="text-xs text-slate-500">Dicuci terpisah, disetrika uap, dan dipacking rapat.</p>
-        </div>
-        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-          <div class="w-12 h-12 mx-auto rounded-full bg-sky-100 dark:bg-sky-950 text-sky-600 font-bold flex items-center justify-center text-lg mb-3">4</div>
-          <h4 class="font-bold mb-1">Diantar Rapi</h4>
-          <p class="text-xs text-slate-500">Pakaian sampai di rumah Anda wangi, rapi, siap simpan.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Kontak & Lokasi -->
-    <section id="kontak" class="py-16 bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-      <div class="max-w-4xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div>
-          <span class="text-xs uppercase tracking-wider font-semibold text-sky-600 dark:text-sky-400">Outlet & Workshop</span>
-          <h2 class="text-2xl font-bold mt-1">E-Laundry Bersih Express</h2>
-          <p class="mt-3 text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-            Jl. Kenanga No. 88, Kelurahan Sukamaju, Kota Anda.<br/>
-            Buka Setiap Hari: 07.00 – 21.00 WIB
-          </p>
-          <div class="mt-6 space-y-2 text-sm">
-            <p><i class="fa-solid fa-phone text-sky-600 mr-2 w-5"></i>0812-3456-7890</p>
-            <p><i class="fa-solid fa-envelope text-sky-600 mr-2 w-5"></i>info@elaundryexpress.id</p>
-            <p><i class="fa-solid fa-clock text-sky-600 mr-2 w-5"></i>Layanan Antar Jemput: 08.00 - 18.00 WIB</p>
+        
           </div>
         </div>
-        <div class="p-6 bg-white dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-center">
-          <i class="fa-solid fa-headset text-4xl text-sky-600 mb-3"></i>
-          <h3 class="font-bold text-lg">Butuh Konsultasi Cucian?</h3>
-          <p class="text-xs text-slate-500 mt-1 mb-4">Punya bahan pakaian khusus sutra, wol, jas formal, atau tas branded? Diskusikan dengan spesialis kami.</p>
-          <a href="https://wa.me/6281234567890?text=Halo%20Admin%20E-Laundry%2C%20mau%20tanya%20treatment%20khusus" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition">
-            <i class="fa-brands fa-whatsapp text-lg"></i>
-            Chat Customer Service
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-6">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                6
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 6 · ±10 menit</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Salin proyek ke laptop</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Supaya bisa dikerjakan bersama AI di laptopmu.</p>
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(6, this.checked)" id="check-step-6" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            <ol class="list-decimal list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300 mt-3"><li>Di halaman repo GitHub-mu, klik tombol hijau Code , salin link HTTPS-nya. Gambar: tombol Code dan link HTTPS di GitHub</li><li>Buka VS Code . Buka terminal lewat menu Terminal → New Terminal . Gambar: menu Terminal → New Terminal Gambar: tampilan Terminal</li><li>Ketik perintah berikut satu per satu (ganti link dan nama folder dengan milikmu), tekan Enter setiap baris: Gambar: perintah git clone di terminal</li></ol>
+            
+            
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PERINTAH GIT / TERMINAL</span>
+            <button onclick="copyText(this)" data-copy="cd Documents
+git clone https://github.com/akunmu/katalog-budi.git" class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin
+            </button>
+          </div>
+          <pre class="bg-slate-950 text-slate-200 p-3 rounded-lg text-xs overflow-x-auto font-mono">cd Documents
+git clone https://github.com/akunmu/katalog-budi.git</pre>
+        </div>
+        
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanDi panel Explorer (kiri) VS Code terlihat folder katalog-budi. Klik folder itu untuk membukanya kalau isinya belum terlihat: di dalamnya ada folder app, components, docs, dan file AGENTS.md. Perintah npm install selesai tanpa tulisan merah ERR!.
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-7">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                7
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 7 · ±5 menit</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Pasang kunci di laptop dan jalankan aplikasi</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Aplikasi di laptop butuh 3 kunci yang sama seperti di Vercel, disimpan di file .env.local.</p>
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(7, this.checked)" id="check-step-7" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            <ol class="list-decimal list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300 mt-3"><li>Di terminal, buat file .env.local dari contohnya: Gambar: membuat file .env.local di terminal</li></ol>
+            
+            
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PERINTAH GIT / TERMINAL</span>
+            <button onclick="copyText(this)" data-copy="Mac/Linux:  cp .env.example .env.local
+Windows:    copy .env.example .env.local" class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin
+            </button>
+          </div>
+          <pre class="bg-slate-950 text-slate-200 p-3 rounded-lg text-xs overflow-x-auto font-mono">Mac/Linux:  cp .env.example .env.local
+Windows:    copy .env.example .env.local</pre>
+        </div>
+        
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanTampilan sama persis dengan link Vercel-mu: Toko Contoh dengan 6 produk contoh.
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-8">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                8
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 8 · ±15 menit</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Ubah identitas toko dan kirim perubahan pertama</h4>
+                
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(8, this.checked)" id="check-step-8" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            <ol class="list-decimal list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300 mt-3"><li>Buka file lib/toko.js . Ganti isi di dalam tanda kutip: nama toko, tagline, alamat, jam buka.</li><li>Ganti nomorWhatsApp dengan nomor usaha, format internasional tanpa tanda + dan tanpa angka 0 di depan. Contoh: 6281234567890 .</li><li>Simpan, lalu cek localhost:3000 : nama toko sudah berubah.</li><li>Buka terminal baru ( Terminal → New Terminal , biarkan yang lama tetap berjalan), lalu kirim perubahan:</li></ol>
+            
+            
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PERINTAH GIT / TERMINAL</span>
+            <button onclick="copyText(this)" data-copy="git add .
+git commit -m "Kustomisasi identitas toko"
+git push" class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin
+            </button>
+          </div>
+          <pre class="bg-slate-950 text-slate-200 p-3 rounded-lg text-xs overflow-x-auto font-mono">git add .
+git commit -m "Kustomisasi identitas toko"
+git push</pre>
+        </div>
+        
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanSetelah ±1 menit, link Vercel-mu juga menampilkan nama toko yang baru. Artinya alur kerja sudah benar: ubah di laptop → push → Vercel otomatis memperbarui.
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-9">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                9
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 9 · US-01</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Katalog dari database</h4>
+                
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(9, this.checked)" id="check-step-9" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            
+            
+        <div class="mt-4">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PROMPT AI AGENT</span>
+            <button onclick="copyText(this)" data-copy="Baca AGENTS.md dan docs/user-stories.md bagian US-01.
+
+Ubah app/page.jsx supaya daftar produk diambil dari tabel "produk" di Supabase, di sisi server, memakai SUPABASE_URL dan SUPABASE_SECRET_KEY dari environment variable. Buat koneksi Supabase untuk server di folder lib/supabase.
+
+Tampilkan produk dengan komponen KartuProduk yang sudah ada, tanpa mengubah tampilannya. Kalau gagal mengambil data, tampilkan pesan error yang jelas di halaman. Kalau tabel kosong, tampilkan tulisan "Belum ada produk". Hapus CatatanBelumAktif dari halaman ini." class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin Prompt
+            </button>
+          </div>
+          <pre class="bg-slate-900 text-emerald-400 p-4 rounded-xl text-xs overflow-x-auto whitespace-pre-wrap font-mono">Baca AGENTS.md dan docs/user-stories.md bagian US-01.
+
+Ubah app/page.jsx supaya daftar produk diambil dari tabel "produk" di Supabase, di sisi server, memakai SUPABASE_URL dan SUPABASE_SECRET_KEY dari environment variable. Buat koneksi Supabase untuk server di folder lib/supabase.
+
+Tampilkan produk dengan komponen KartuProduk yang sudah ada, tanpa mengubah tampilannya. Kalau gagal mengambil data, tampilkan pesan error yang jelas di halaman. Kalau tabel kosong, tampilkan tulisan "Belum ada produk". Hapus CatatanBelumAktif dari halaman ini.</pre>
+        </div>
+        
+            
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PERINTAH GIT / TERMINAL</span>
+            <button onclick="copyText(this)" data-copy="git add .
+git commit -m "US-01: katalog dari database"
+git push" class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin
+            </button>
+          </div>
+          <pre class="bg-slate-950 text-slate-200 p-3 rounded-lg text-xs overflow-x-auto font-mono">git add .
+git commit -m "US-01: katalog dari database"
+git push</pre>
+        </div>
+        
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanTulisan "Masih data contoh" hilang dan 6 kartu produk tetap tampil. Karena isinya mirip data contoh, buktikan datanya dari database:Di Supabase Table Editor → produk, klik ganda nama satu produk, ubah (misalnya jadi "Kopi Spesial"), tekan Enter.Muat ulang localhost:3000. Nama produk ikut berubah = berhasil.
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-10">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                10
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 10 · US-02</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Halaman detail produk</h4>
+                
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(10, this.checked)" id="check-step-10" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            
+            
+        <div class="mt-4">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PROMPT AI AGENT</span>
+            <button onclick="copyText(this)" data-copy="Baca docs/user-stories.md bagian US-02.
+
+Ubah app/produk/[id]/page.jsx supaya mengambil satu produk dari tabel "produk" di Supabase berdasarkan id di URL, di sisi server, memakai koneksi Supabase yang sudah dibuat di lib/supabase. Kalau produk tidak ditemukan, panggil notFound(). Jangan ubah tampilannya. Hapus CatatanBelumAktif dari halaman ini, tapi biarkan tombol WhatsApp." class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin Prompt
+            </button>
+          </div>
+          <pre class="bg-slate-900 text-emerald-400 p-4 rounded-xl text-xs overflow-x-auto whitespace-pre-wrap font-mono">Baca docs/user-stories.md bagian US-02.
+
+Ubah app/produk/[id]/page.jsx supaya mengambil satu produk dari tabel "produk" di Supabase berdasarkan id di URL, di sisi server, memakai koneksi Supabase yang sudah dibuat di lib/supabase. Kalau produk tidak ditemukan, panggil notFound(). Jangan ubah tampilannya. Hapus CatatanBelumAktif dari halaman ini, tapi biarkan tombol WhatsApp.</pre>
+        </div>
+        
+            
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PERINTAH GIT / TERMINAL</span>
+            <button onclick="copyText(this)" data-copy="git add .
+git commit -m "US-02: detail produk dari database"
+git push" class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin
+            </button>
+          </div>
+          <pre class="bg-slate-950 text-slate-200 p-3 rounded-lg text-xs overflow-x-auto font-mono">git add .
+git commit -m "US-02: detail produk dari database"
+git push</pre>
+        </div>
+        
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanKlik salah satu kartu produk: halaman detail terbuka dengan foto, harga, dan deskripsi.Ubah deskripsi produk itu di Supabase, muat ulang: deskripsi ikut berubah.Buka localhost:3000/produk/9999: tampil halaman "Halaman tidak ditemukan".
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-11">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                11
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 11 · US-03</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Tombol pesan via WhatsApp</h4>
+                
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(11, this.checked)" id="check-step-11" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            
+            
+        <div class="mt-4">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PROMPT AI AGENT</span>
+            <button onclick="copyText(this)" data-copy="Baca docs/rancangan-teknis.md bagian "Pesan WhatsApp (US-03)".
+
+Ubah components/TombolWhatsApp.jsx menjadi tautan yang membuka https://wa.me/ ke nomor di lib/toko.js, dengan pesan otomatis berisi nama dan harga produk dalam format rupiah. Pesan di-encode dengan encodeURIComponent dan dibuka di tab baru. Pertahankan tampilan tombolnya. Hapus CatatanBelumAktif yang menyebut US-03 di halaman detail produk." class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin Prompt
+            </button>
+          </div>
+          <pre class="bg-slate-900 text-emerald-400 p-4 rounded-xl text-xs overflow-x-auto whitespace-pre-wrap font-mono">Baca docs/rancangan-teknis.md bagian "Pesan WhatsApp (US-03)".
+
+Ubah components/TombolWhatsApp.jsx menjadi tautan yang membuka https://wa.me/ ke nomor di lib/toko.js, dengan pesan otomatis berisi nama dan harga produk dalam format rupiah. Pesan di-encode dengan encodeURIComponent dan dibuka di tab baru. Pertahankan tampilan tombolnya. Hapus CatatanBelumAktif yang menyebut US-03 di halaman detail produk.</pre>
+        </div>
+        
+            
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PERINTAH GIT / TERMINAL</span>
+            <button onclick="copyText(this)" data-copy="git add .
+git commit -m "US-03: tombol pesan WhatsApp"
+git push" class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin
+            </button>
+          </div>
+          <pre class="bg-slate-950 text-slate-200 p-3 rounded-lg text-xs overflow-x-auto font-mono">git add .
+git commit -m "US-03: tombol pesan WhatsApp"
+git push</pre>
+        </div>
+        
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanKlik tombol di halaman detail: WhatsApp Web (atau aplikasi WhatsApp) terbuka ke nomor tokomu, dengan pesan sudah terisi, misalnya "Halo, saya mau pesan Kopi Bubuk Robusta 250 g (Rp 45.000)".
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-12">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                12
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 12 · US-04</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Login admin</h4>
+                
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(12, this.checked)" id="check-step-12" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            
+            
+        <div class="mt-4">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PROMPT AI AGENT</span>
+            <button onclick="copyText(this)" data-copy="Baca AGENTS.md bagian aturan keamanan dan docs/user-stories.md bagian US-04.
+
+Buat login admin memakai Supabase Auth (email dan password) dengan @supabase/ssr dan cookie, memakai SUPABASE_URL dan SUPABASE_PUBLISHABLE_KEY. Login diproses dengan Server Action di app/admin/actions.js dan disambungkan ke form di app/admin/login/page.jsx. Login berhasil diarahkan ke /admin; login gagal menampilkan pesan error yang jelas di halaman login. Buat juga tombol "Keluar" di components/NavAdmin.jsx berfungsi: mengakhiri sesi lalu kembali ke /admin/login. Jangan ubah tampilan. Hapus CatatanBelumAktif dari halaman login." class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin Prompt
+            </button>
+          </div>
+          <pre class="bg-slate-900 text-emerald-400 p-4 rounded-xl text-xs overflow-x-auto whitespace-pre-wrap font-mono">Baca AGENTS.md bagian aturan keamanan dan docs/user-stories.md bagian US-04.
+
+Buat login admin memakai Supabase Auth (email dan password) dengan @supabase/ssr dan cookie, memakai SUPABASE_URL dan SUPABASE_PUBLISHABLE_KEY. Login diproses dengan Server Action di app/admin/actions.js dan disambungkan ke form di app/admin/login/page.jsx. Login berhasil diarahkan ke /admin; login gagal menampilkan pesan error yang jelas di halaman login. Buat juga tombol "Keluar" di components/NavAdmin.jsx berfungsi: mengakhiri sesi lalu kembali ke /admin/login. Jangan ubah tampilan. Hapus CatatanBelumAktif dari halaman login.</pre>
+        </div>
+        
+            
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PERINTAH GIT / TERMINAL</span>
+            <button onclick="copyText(this)" data-copy="git add .
+git commit -m "US-04: login admin"
+git push" class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin
+            </button>
+          </div>
+          <pre class="bg-slate-950 text-slate-200 p-3 rounded-lg text-xs overflow-x-auto font-mono">git add .
+git commit -m "US-04: login admin"
+git push</pre>
+        </div>
+        
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanBuka localhost:3000/admin/login, masuk dengan password salah: muncul pesan error.Masuk dengan email dan password bawaan dari Langkah 4: masuk ke halaman daftar produk admin.Klik Keluar: kembali ke halaman login.
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-13">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                13
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 13 · US-05</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Ganti password admin</h4>
+                
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(13, this.checked)" id="check-step-13" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            
+            
+        <div class="mt-4">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PROMPT AI AGENT</span>
+            <button onclick="copyText(this)" data-copy="Baca docs/user-stories.md bagian US-05.
+
+Buat Server Action ganti password di app/admin/actions.js untuk admin yang sedang login, memakai Supabase Auth. Validasi di server: password baru minimal 8 karakter dan harus sama dengan konfirmasi. Tampilkan pesan berhasil atau pesan error yang jelas di halaman. Sambungkan ke form di app/admin/password/page.jsx tanpa mengubah tampilannya. Hapus CatatanBelumAktif dari halaman ini." class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin Prompt
+            </button>
+          </div>
+          <pre class="bg-slate-900 text-emerald-400 p-4 rounded-xl text-xs overflow-x-auto whitespace-pre-wrap font-mono">Baca docs/user-stories.md bagian US-05.
+
+Buat Server Action ganti password di app/admin/actions.js untuk admin yang sedang login, memakai Supabase Auth. Validasi di server: password baru minimal 8 karakter dan harus sama dengan konfirmasi. Tampilkan pesan berhasil atau pesan error yang jelas di halaman. Sambungkan ke form di app/admin/password/page.jsx tanpa mengubah tampilannya. Hapus CatatanBelumAktif dari halaman ini.</pre>
+        </div>
+        
+            
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PERINTAH GIT / TERMINAL</span>
+            <button onclick="copyText(this)" data-copy="git add .
+git commit -m "US-05: ganti password admin"
+git push" class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin
+            </button>
+          </div>
+          <pre class="bg-slate-950 text-slate-200 p-3 rounded-lg text-xs overflow-x-auto font-mono">git add .
+git commit -m "US-05: ganti password admin"
+git push</pre>
+        </div>
+        
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanLogin, buka menu Ganti password, isi password baru (minimal 8 karakter). Catat password barumu.Muncul pesan berhasil.Klik Keluar, coba login dengan password bawaan: gagal. Login dengan password baru: berhasil.
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-14">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                14
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 14 · US-06</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Kunci semua halaman admin</h4>
+                
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(14, this.checked)" id="check-step-14" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            
+            
+        <div class="mt-4">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PROMPT AI AGENT</span>
+            <button onclick="copyText(this)" data-copy="Baca AGENTS.md aturan keamanan nomor 3 dan 4, dan docs/user-stories.md bagian US-06.
+
+Buat file proxy.js di root proyek (Next.js 16). Semua rute /admin kecuali /admin/login wajib login dengan Supabase Auth; kalau belum login, alihkan ke /admin/login. Pastikan juga setiap Server Action yang mengubah data memeriksa login di server. Hapus CatatanBelumAktif dari halaman /admin." class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin Prompt
+            </button>
+          </div>
+          <pre class="bg-slate-900 text-emerald-400 p-4 rounded-xl text-xs overflow-x-auto whitespace-pre-wrap font-mono">Baca AGENTS.md aturan keamanan nomor 3 dan 4, dan docs/user-stories.md bagian US-06.
+
+Buat file proxy.js di root proyek (Next.js 16). Semua rute /admin kecuali /admin/login wajib login dengan Supabase Auth; kalau belum login, alihkan ke /admin/login. Pastikan juga setiap Server Action yang mengubah data memeriksa login di server. Hapus CatatanBelumAktif dari halaman /admin.</pre>
+        </div>
+        
+            
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+            <span>PERINTAH GIT / TERMINAL</span>
+            <button onclick="copyText(this)" data-copy="git add .
+git commit -m "US-06: proteksi halaman admin"
+git push" class="text-emerald-600 hover:underline flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Salin
+            </button>
+          </div>
+          <pre class="bg-slate-950 text-slate-200 p-3 rounded-lg text-xs overflow-x-auto font-mono">git add .
+git commit -m "US-06: proteksi halaman admin"
+git push</pre>
+        </div>
+        
+            
+        <div class="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200">
+          ✓ Hasil yang diharapkanBuka jendela penyamaran (Ctrl+Shift+N / Cmd+Shift+N), ketik localhost:3000/admin: langsung dialihkan ke halaman login.Coba juga localhost:3000/admin/password: dialihkan ke login.Setelah login, halaman admin terbuka normal.
+        </div>
+        
+          </div>
+        </div>
+    
+        <div class="step-card border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700" id="step-15">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                15
+              </div>
+              <div>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">LANGKAH 15 · batas pukul 15.00</span>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white">Cek keamanan, lengkapi, kumpulkan</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Isi form di bagian Kumpulkan karya (di bawah fitur bonus).</p>
+              </div>
+            </div>
+            <div>
+              <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold">
+                <input type="checkbox" onchange="toggleStep(15, this.checked)" id="check-step-15" class="w-4 h-4 text-emerald-600 rounded" />
+                <span>Selesai</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pl-11">
+            
+            
+            
+            
+          </div>
+        </div>
+    
+      </div>
+    </section>
+
+    <!-- BAGIAN 2: Bonus User Stories -->
+    <section id="bonus-stories" class="space-y-6 pt-6 border-t border-slate-200 dark:border-slate-800">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-bold flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-sky-500"></span>
+            44 User Stories Bonus (US-07 s/d US-50)
+          </h3>
+          <p class="text-xs text-slate-500 mt-1">Total akumulasi nilai hingga 500 poin workshop.</p>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm border-collapse">
+            <thead>
+              <tr class="bg-slate-100 dark:bg-slate-800 text-xs text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-700">
+                <th class="py-3 px-4 w-12 text-center">Status</th>
+                <th class="py-3 px-4 w-28">Kode</th>
+                <th class="py-3 px-4">Nama Fitur & Deskripsi Spesifikasi</th>
+                <th class="py-3 px-4 w-24 text-right">Poin</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
+
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-07List Produk</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-08Tambah produk</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-09Ubah produk</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-10Hapus produk</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-11Filter kategori atau pencarian</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-12Pilih jumlah atau varian</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-13PWA</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-14Deskripsi produk dibuat AI</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-15Urutkan produk</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-16Paginasi atau muat lebih banyak</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-17Produk terkait di halaman detail</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-18Galeri beberapa foto produk</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-19Status stok</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-20Harga coret dan badge</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-21Keranjang, pesan semua via WhatsApp</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">15</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-22Halaman Tentang dan kontak toko</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-23Bagikan atau salin link produk</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-24Favorit tersimpan di browser</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-25Mode gelap</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-26Metadata SEO dan Open Graph</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-27sitemap.xml dan robots.txt</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-28Halaman 404 dan loading kustom</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-29Upload foto ke Supabase Storage</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">15</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-30Dashboard ringkasan admin</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-31Kelola kategori</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">15</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-32Aktif atau nonaktifkan produk</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-33Cari dan paginasi di list admin</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-34Validasi form admin di server</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-35Ekspor produk ke CSV</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-36Terakhir dilihat</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-37Bandingkan 2 produk</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">15</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-38Ulasan dan rating</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">15</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-39Moderasi ulasan di admin</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-40Catat klik pesan WhatsApp</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-41Produk terlaris di dashboard</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-42Banner promo di beranda</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-43Pengaturan toko dari admin</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">15</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-44Kelola akun admin</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">15</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-45Log aktivitas admin</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-46Impor produk dari CSV</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">15</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-47Atur urutan tampil produk</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-48Varian harga per ukuran</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">15</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-49Halaman per kategori</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveBonusCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-sky-600 dark:text-sky-400">US-50Asisten AI tanya jawab produk</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">15</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAGIAN 3: Audit Keamanan -->
+    <section id="audit-keamanan" class="space-y-6 pt-6 border-t border-slate-200 dark:border-slate-800">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-bold flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+            8 Kriteria Pemeriksaan Keamanan (K-6 s/d K-13)
+          </h3>
+          <p class="text-xs text-slate-500 mt-1">Standar keamanan wajib aplikasi sebelum produksi.</p>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm border-collapse">
+            <thead>
+              <tr class="bg-slate-100 dark:bg-slate-800 text-xs text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-700">
+                <th class="py-3 px-4 w-12 text-center">Status</th>
+                <th class="py-3 px-4 w-28">Kode</th>
+                <th class="py-3 px-4">Kriteria Pemeriksaan Keamanan</th>
+                <th class="py-3 px-4 w-24 text-right">Poin</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
+
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveSecCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-amber-600 dark:text-amber-400">K-6Header keamanan di aplikasi live</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveSecCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-amber-600 dark:text-amber-400">K-7Tanpa dangerouslySetInnerHTML atau eval berbahaya</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveSecCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-amber-600 dark:text-amber-400">K-8/admin tidak diindeks mesin pencari</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveSecCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-amber-600 dark:text-amber-400">K-9Error tidak membocorkan stack trace</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveSecCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-amber-600 dark:text-amber-400">K-10Dependensi tanpa kerentanan kritis</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveSecCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-amber-600 dark:text-amber-400">K-11Content-Security-Policy ketat</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveSecCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-amber-600 dark:text-amber-400">K-12Rate limit login atau form</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">10</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3 px-4 text-center">
+                  <input type="checkbox" onchange="saveSecCheck(this)" class="w-4 h-4 text-emerald-600 rounded" />
+                </td>
+                <td class="py-3 px-4 font-mono font-bold text-amber-600 dark:text-amber-400">K-13Tanpa console.log data sensitif</td>
+                <td class="py-3 px-4 text-slate-700 dark:text-slate-300">5</td>
+                <td class="py-3 px-4 text-right font-semibold text-emerald-600 dark:text-emerald-400">10 Poin</td>
+              </tr>
+        
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Pengumpulan -->
+    <section class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-6 md:p-8 shadow-lg">
+      <div class="max-w-2xl">
+        <h3 class="text-xl font-extrabold">Siap Mengumpulkan Karya?</h3>
+        <p class="mt-2 text-emerald-100 text-xs leading-relaxed">
+          Pastikan link Vercel dapat diakses publik tanpa login, akun admin telah diganti password unik, dan remote GitHub telah disinkronkan.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="https://worksheet.andixurniawan.com/development" target="_blank" class="bg-white text-emerald-800 px-4 py-2 rounded-lg text-xs font-bold hover:bg-emerald-50 transition flex items-center gap-1.5 shadow">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            Buka Form Pengumpulan Resmi
+          </a>
+          <a href="https://github.com/sodikinnaa/e-loundry" target="_blank" class="bg-emerald-800/80 text-white border border-emerald-400/40 px-4 py-2 rounded-lg text-xs font-bold hover:bg-emerald-800 transition flex items-center gap-1.5">
+            <i class="fa-brands fa-github"></i>
+            Lihat Repo e-loundry
           </a>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="py-6 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p>&copy; 2026 E-Laundry Bersih Express. Hak Cipta Dilindungi.</p>
-      <div class="flex items-center gap-4">
-        <a href="#layanan" class="hover:underline">Layanan</a>
-        <a href="#kalkulator" class="hover:underline">Hitung Biaya</a>
-        <a href="https://github.com/sodikinnaa/e-loundry" target="_blank" rel="noopener" class="hover:underline flex items-center gap-1">
-          <i class="fa-brands fa-github"></i> GitHub
-        </a>
-      </div>
-    </div>
+  <footer class="py-8 text-center text-xs text-slate-400 border-t border-slate-200 dark:border-slate-800">
+    <p>Worksheet Development Checklist &middot; E-Laundry UMKM Project</p>
   </footer>
 
   <script>
-    // Inisialisasi Mode Gelap
-    const toggleBtn = document.getElementById('themeToggle');
+    // Theme setup
+    const themeBtn = document.getElementById('themeBtn');
     const themeIcon = document.getElementById('themeIcon');
-
     if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
       themeIcon.classList.remove('fa-moon');
       themeIcon.classList.add('fa-sun');
     }
-
-    toggleBtn.addEventListener('click', () => {
+    themeBtn.addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');
       const isDark = document.documentElement.classList.contains('dark');
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
@@ -312,42 +1389,57 @@
       themeIcon.classList.toggle('fa-sun', isDark);
     });
 
-    // Hitung Total Biaya
-    function hitungTotal() {
-      const selectLayanan = document.getElementById('layananPilihan');
-      const hargaPerUnit = parseInt(selectLayanan.value, 10);
-      const jumlah = Math.max(1, parseInt(document.getElementById('jumlahKilo').value, 10) || 1);
-      const ongkir = parseInt(document.getElementById('opsiAntar').value, 10);
-      const total = (hargaPerUnit * jumlah) + ongkir;
-      document.getElementById('labelTotal').innerText = 'Rp ' + total.toLocaleString('id-ID');
-      return { total, hargaPerUnit, jumlah, ongkir, layanan: selectLayanan.options[selectLayanan.selectedIndex].getAttribute('data-nama') };
+    // Step state tracking
+    const totalSteps = 15;
+    function getStoredSteps() {
+      try {
+        return JSON.parse(localStorage.getItem('elaundry_steps') || '{}');
+      } catch(e) { return {}; }
     }
 
-    function orderPreset(namaLayanan, harga) {
-      const select = document.getElementById('layananPilihan');
-      for (let i = 0; i < select.options.length; i++) {
-        if (select.options[i].getAttribute('data-nama').includes(namaLayanan) || parseInt(select.options[i].value, 10) === harga) {
-          select.selectedIndex = i;
-          break;
+    function updateProgressUI() {
+      const stored = getStoredSteps();
+      let completedCount = 0;
+      for (let i = 1; i <= totalSteps; i++) {
+        const chk = document.getElementById('check-step-' + i);
+        if (chk) {
+          chk.checked = !!stored[i];
+          if (stored[i]) completedCount++;
         }
       }
-      hitungTotal();
-      document.getElementById('kalkulator').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('progressLabel').innerText = completedCount + ' / ' + totalSteps + ' Selesai';
+      const pct = Math.round((completedCount / totalSteps) * 100);
+      document.getElementById('progressBar').style.width = pct + '%';
     }
 
-    // Kirim Pesanan ke WhatsApp
-    function kirimPesananWA() {
-      const data = hitungTotal();
-      const nama = document.getElementById('namaPemesan').value.trim() || 'Pelanggan';
-      const catatan = document.getElementById('alamatJemput').value.trim() || 'Alamat outlet';
-      const noWA = '6281234567890'; // Ganti nomor WhatsApp toko di sini
-
-      const pesan = `Halo E-Laundry Bersih Express,%0A%0ASaya ingin memesan layanan:%0A- *Nama*: ${encodeURIComponent(nama)}%0A- *Paket*: ${encodeURIComponent(data.layanan)}%0A- *Jumlah*: ${data.jumlah} Kg/Pcs%0A- *Estimasi Total*: Rp ${data.total.toLocaleString('id-ID')}%0A- *Alamat / Catatan*: ${encodeURIComponent(catatan)}%0A%0AMohon konfirmasi jadwal penjemputan. Terima kasih!`;
-
-      window.open(`https://wa.me/${noWA}?text=${pesan}`, '_blank');
+    function toggleStep(num, checked) {
+      const stored = getStoredSteps();
+      if (checked) {
+        stored[num] = true;
+      } else {
+        delete stored[num];
+      }
+      localStorage.setItem('elaundry_steps', JSON.stringify(stored));
+      updateProgressUI();
     }
 
-    window.addEventListener('DOMContentLoaded', hitungTotal);
+    function resetProgress() {
+      if (confirm('Reset semua checklist progres Anda?')) {
+        localStorage.removeItem('elaundry_steps');
+        updateProgressUI();
+      }
+    }
+
+    function copyText(btn) {
+      const text = btn.getAttribute('data-copy');
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Tersalin!';
+        setTimeout(() => { btn.innerHTML = orig; }, 1500);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', updateProgressUI);
   </script>
 </body>
 </html>
